@@ -1,0 +1,27 @@
+int trap(vector<int> &rain)
+        {
+            int n = rain.size();
+            int i;
+            vector<int> maxL(n, 0), maxR(n, 0);
+            int left = 0, right = 0;
+            for (i = 0; i < n; i++)
+            {
+                maxL[i] = left;
+                left = max(left, rain[i]);
+            }
+            for (i = n - 1; i >= 0; i--)
+            {
+                maxR[i] = right;
+                right = max(right, rain[i]);
+            }
+            int rainWater = 0;
+            for (i = 0; i < n; i++)
+            {
+                int height = min(maxL[i], maxR[i]);
+                if (height > rain[i])
+                {
+                    rainWater += (height - rain[i]);
+                }
+            }
+            return rainWater;
+        }
