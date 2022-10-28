@@ -1,0 +1,58 @@
+void createGraph(vector<vector < int>> &pre, vector< vector< int>> &graph)
+        {
+            int e = pre.size();
+            for (int i = 0; i < e; i++)
+            {
+                graph[pre[i][1]].push_back(pre[i][0]);
+            }
+        }
+    bool finish(int n, vector<vector < int>> &prerequisites)
+    {
+       	// topological sort 
+        vector<int> indeg(n, 0);
+        vector<vector < int>> g(n, vector<int> (0));
+        createGraph(prerequisites, g);
+        int i;
+        for (i = 0; i < prerequisites.size(); i++)
+        {
+            indeg[prerequisites[i][0]]++;
+        }
+        bool chk = false;
+        queue<int> q;
+        int cnt = 0;
+        for (i = 0; i < n; i++)
+        {
+            if (indeg[i] == 0)
+            {
+                chk = 1;
+                q.push(i);
+                cnt++;
+            }
+        }
+        if (chk)
+        {
+            while (!q.empty())
+            {
+                int n1 = q.front();
+                q.pop();
+                for (int i = 0; i < g[n1].size(); i++)
+                {
+                    indeg[g[n1][i]]--;
+                    if (indeg[g[n1][i]] == 0)
+                    {
+                        q.push(g[n1][i]);
+                        cnt++;
+                    }
+                }
+            }
+            if (cnt == n)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    bool canFinish(int n, vector<vector < int>> &prerequisites) 
+    {
+         return finish(n,prerequisites);
+    }
